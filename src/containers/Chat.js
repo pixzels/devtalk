@@ -8,7 +8,8 @@ export default class Chat extends React.Component {
     this.state = {
       message: "",
       history: [],
-      is_partner_typing: false
+      is_partner_typing: false,
+      is_partner_offline: false
     };
   }
 
@@ -18,16 +19,21 @@ export default class Chat extends React.Component {
       this.store_message(user, message);
     });
 
-    //Typing indicator
+    // Typing indicator
     socket.on("typing", ({ value }) => {
       this.setState({ is_partner_typing: value });
     });
+
+    // Disconnected indicator
+    socket.on("offline", value => {
+      this.setState({ is_partner_offline: value });
+    });
   }
 
-  store_message = (user, message, new_state = {}) => {
+  store_message = (user, message, additional_state = {}) => {
     let new_history = this.state.history.slice(); // Copy history array as state is supposed to be immutable
     new_history.push({ user, message });
-    this.setState({ history: new_history, ...new_state });
+    this.setState({ history: new_history, ...additional_state });
   };
 
   send_message = () => {
@@ -37,12 +43,12 @@ export default class Chat extends React.Component {
     const socket = this.props.socket;
     const message = this.state.message;
     socket.emit("send_message", {
-      to: this.props.partner_id,
+      to: this.props.partner.id,
       message
     });
     this.store_message(socket.id, message, { message: "" });
     this.props.socket.emit("typing", {
-      to: this.props.partner_id,
+      to: this.props.partner.id,
       value: false
     });
   };
@@ -50,7 +56,7 @@ export default class Chat extends React.Component {
   on_typing = e => {
     this.setState({ message: e.target.value });
     this.props.socket.emit("typing", {
-      to: this.props.partner_id,
+      to: this.props.partner.id,
       value: true
     });
   };
@@ -61,8 +67,16 @@ export default class Chat extends React.Component {
         <Logo />
         <p className={styles.connection}>
           {!this.state.is_partner_typing
-            ? `Connected to: ${this.props.partner_handle}`
-            : `${this.props.partner_handle} is typing...`}
+            ? `Connected to: ${this.props.partner.handle}`
+            : `${this.props.partner.handle} is typing...`}
+          <span
+            className={styles.status}
+            style={{
+              backgroundColor: this.state.is_partner_offline
+                ? "rgb(255, 59, 48)"
+                : "rgb(52, 199, 89)"
+            }}
+          />
         </p>
         <div className={styles.messages}>
           {this.state.history.map((el, i) => (

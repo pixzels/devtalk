@@ -13,7 +13,7 @@
 .chat_bar {
   display: flex;
   justify-content: space-between;
-  border-top: 2px solid #EAEAF0;
+  border-top: 2px solid #eaeaf0;
 }
 
 .chat_bar input {
@@ -26,7 +26,7 @@
 }
 
 .chat_bar input::placeholder {
-  color: #9A9DA5;
+  color: #9a9da5;
 }
 
 .chat_bar button {
@@ -39,4 +39,12 @@
   font-family: inherit;
   font-weight: bold;
   text-decoration: underline;
+}
+
+.status {
+  height: 1rem;
+  width: 1rem;
+  display: inline-block;
+  border-radius: 50%;
+  margin-left: 1rem;
 }

@@ -11,8 +11,7 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      partner_id: null,
-      partner_handle: null,
+      partner: {},
       handle: "",
       connection_success: false,
       initiated_connection: false
@@ -21,11 +20,10 @@ export default class App extends React.Component {
 
   componentDidMount() {
     // Register user
-    socket.on("connection_success", ({ partner_id, partner_handle }) => {
-      if (partner_id !== -1) {
+    socket.on("connection_success", ({ partner }) => {
+      if (partner.id !== -1) {
         this.setState({
-          partner_id,
-          partner_handle,
+          partner,
           connection_success: true
         });
       }
@@ -51,8 +49,7 @@ export default class App extends React.Component {
       return (
         <div className={styles.App}>
           <Chat
-            partner_id={this.state.partner_id}
-            partner_handle={this.state.partner_handle}
+            partner={this.state.partner}
             socket={socket}
             handle={this.state.handle}
           />

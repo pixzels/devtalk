@@ -11,35 +11,48 @@ const io = socket(server);
 // Static files
 app.use(express.static("build"));
 
-users = {};
+// User
+class User {
+  constructor(handle = null, socket = null, id = null, partner_id = null) {
+    this.handle = handle;
+    this.socket = socket;
+    this.id = id;
+    this.partner_id = partner_id;
+  }
+}
+
+database = {};
 available_users = [];
 
 io.on("connection", function(socket) {
   // Any new connection
   socket.on("establish_connection", function({ handle }) {
-    self_id = socket.id;
-    users[self_id] = socket;
-    users[self_id].handle = handle;
+    let user = new User(handle, socket, socket.id);
+    partner = find_random_partner();
 
-    if (!does_exist(available_users, self_id)) {
-      available_users.push(self_id);
-    }
-    partner_id = find_random_partner(self_id);
+    if (partner) {
+      user.partner_id = partner.id;
+      partner.partner_id = user.id;
 
-    if (partner_id) {
-      remove(available_users, [partner_id, self_id]);
-      io.to(partner_id).emit("connection_success", {
-        partner_id: self_id,
-        partner_handle: users[self_id].handle
+      io.to(partner.id).emit("connection_success", {
+        partner: {
+          id: user.id,
+          handle: user.handle
+        }
       });
-      io.to(self_id).emit("connection_success", {
-        partner_id: partner_id,
-        partner_handle: users[partner_id].handle
+
+      io.to(user.id).emit("connection_success", {
+        partner: {
+          id: partner.id,
+          handle: partner.handle
+        }
       });
+      remove(available_users, [user.id, partner.id]);
     } else {
-      io.to(partner_id).emit("connection_success", { partner_id: -1 });
-      io.to(self_id).emit("connection_success", { partner_id: -1 });
+      io.to(user.id).emit("connection_success", { partner: { id: -1 } });
+      if (!does_exist(available_users, user.id)) available_users.push(user.id);
     }
+    database[user.id] = user;
   });
 
   // Typing indicator
@@ -52,17 +65,27 @@ io.on("connection", function(socket) {
   });
 
   socket.on("disconnect", function() {
-    delete users[socket.id];
-    remove(available_users, socket.id);
+    let id = socket.id;
+    let partner = id in database ? database[database[id].partner_id] : null;
+
+    if (partner) {
+      io.to(partner.id).emit("offline", { value: true });
+      database[partner.id].partner_id = null;
+      database[id].partner_id = null;
+      delete database[partner.id];
+      remove(available_users, [partner.id]);
+    }
+
+    delete database[id];
+    remove(available_users, [id]);
   });
 });
 
-function find_random_partner(self_id) {
-  possible_users = available_users.filter(function(u) {
-    return u !== self_id;
-  });
-  return possible_users.length
-    ? possible_users[Math.floor(Math.random() * possible_users.length)]
+function find_random_partner() {
+  return available_users.length
+    ? database[
+        available_users[Math.floor(Math.random() * available_users.length)]
+      ]
     : null;
 }
 
@@ -82,5 +105,8 @@ function does_exist(arr, value) {
 
 // Debugging
 app.get("/tonystark", function(req, res) {
-  res.json({ users: Object.keys(users), available_users: available_users });
+  res.json({
+    database: Object.keys(database),
+    available_users: available_users
+  });
 });
