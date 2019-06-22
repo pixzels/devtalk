@@ -16,12 +16,10 @@ available_users = [];
 
 // Any new connection
 io.on("connection", function(socket) {
-  socket.on("new_user", function() {
-    users[socket.id] = socket;
-  });
-
-  socket.on("establish_connection", function() {
+  socket.on("establish_connection", function({ handle }) {
     self_id = socket.id;
+    users[self_id] = socket;
+    users[self_id].handle = handle;
 
     if (!does_exist(available_users, self_id)) {
       available_users.push(self_id);
@@ -30,8 +28,14 @@ io.on("connection", function(socket) {
 
     if (partner_id) {
       remove(available_users, [partner_id, self_id]);
-      io.to(partner_id).emit("connection_success", { partner_id: self_id });
-      io.to(self_id).emit("connection_success", { partner_id: partner_id });
+      io.to(partner_id).emit("connection_success", {
+        partner_id: self_id,
+        partner_handle: users[self_id].handle
+      });
+      io.to(self_id).emit("connection_success", {
+        partner_id: partner_id,
+        partner_handle: users[partner_id].handle
+      });
     } else {
       io.to(partner_id).emit("connection_success", { partner_id: -1 });
       io.to(self_id).emit("connection_success", { partner_id: -1 });

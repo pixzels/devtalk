@@ -5,13 +5,14 @@ import Chat from "./containers/Chat";
 import Loader from "./components/Loader";
 import Logo from "./components/Logo";
 
-const socket = openSocket(); // Defaults to current url
+const socket = openSocket("http://localhost:7000"); // Defaults to current url
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       partner_id: null,
+      partner_handle: null,
       handle: "",
       connection_success: false,
       initiated_connection: false
@@ -20,11 +21,11 @@ export default class App extends React.Component {
 
   componentDidMount() {
     // Register user
-    socket.emit("new_user");
-    socket.on("connection_success", ({ partner_id }) => {
+    socket.on("connection_success", ({ partner_id, partner_handle }) => {
       if (partner_id !== -1) {
         this.setState({
           partner_id,
+          partner_handle,
           connection_success: true
         });
       }
@@ -37,10 +38,12 @@ export default class App extends React.Component {
       alert("Oops! You don't seem to have a handle. Please try again");
       return;
     }
+
     this.setState({
       initiated_connection: true
     });
-    socket.emit("establish_connection");
+
+    socket.emit("establish_connection", { handle: this.state.handle });
   };
 
   render() {
@@ -49,6 +52,7 @@ export default class App extends React.Component {
         <div className={styles.App}>
           <Chat
             partner_id={this.state.partner_id}
+            partner_handle={this.state.partner_handle}
             socket={socket}
             handle={this.state.handle}
           />

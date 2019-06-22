@@ -42,7 +42,7 @@ export default class Chat extends React.Component {
       <React.Fragment>
         <Logo />
         <p className={styles.connection}>
-          Connected to: {this.props.partner_id}
+          Connected to: {this.props.partner_handle}
         </p>
         <div className={styles.messages}>
           {this.state.history.map((el, i) => (
