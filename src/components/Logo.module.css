@@ -1,0 +1,12 @@
+.logo {
+    color: #fff;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 400;
+    font-size: 3rem;
+    padding: 1rem;
+    display: block;
+    width: max-content;
+    margin: 3rem auto;
+    border-radius: 5px;
+    background-color: #000;
+  }

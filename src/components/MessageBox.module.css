@@ -1,0 +1,19 @@
+.box {
+  padding: 1rem;
+  border-radius: 5px;
+  width: 30rem;
+  margin-bottom: 1rem;
+  word-wrap: break-word;
+}
+
+@media only screen and (max-width: 900px) {
+  .box {
+    width: 20rem;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  .box {
+    width: 15rem;
+  }
+}

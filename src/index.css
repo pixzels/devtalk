@@ -1,13 +1,28 @@
-body {
+@import url('https://fonts.googleapis.com/css?family=Karla:400,400i,700&display=swap');
+
+:root {
+  --color-lightgrey: rgb(199, 199, 204);
+  --color-blue: rgb(0, 122, 255);
+  --color-grey: rgb(142, 142, 147);
+}
+
+* {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  font-size: 1.6rem;
+  font-family: "Karla",
+    -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+  font-weight: 400;
 }

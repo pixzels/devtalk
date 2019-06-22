@@ -1,0 +1,34 @@
+@keyframes initial-loading {
+
+  0%,
+  100% {
+    transform: translate(-34px, 0)
+  }
+
+  50% {
+    transform: translate(96px, 0)
+  }
+}
+
+.loadingBar {
+  width: 130px;
+  height: 2px;
+  margin: 0 auto;
+  border-radius: 2px;
+  background-color: var(--color-lightgrey);
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  transform: rotateY(0);
+  transition: transform .3s ease-in;
+}
+
+.blackBar {
+  height: 100%;
+  width: 68px;
+  position: absolute;
+  transform: translate(-34px, 0);
+  background-color: var(--color-blue);
+  border-radius: 2px;
+  animation: initial-loading 1.5s infinite ease;
+}
