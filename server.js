@@ -104,7 +104,7 @@ function does_exist(arr, value) {
 }
 
 // Debugging
-app.get("/tonystark", function(req, res) {
+app.get("/watcher", function(req, res) {
   res.json({
     database: Object.keys(database),
     available_users: available_users
