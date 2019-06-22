@@ -14,8 +14,8 @@ app.use(express.static("build"));
 users = {};
 available_users = [];
 
-// Any new connection
 io.on("connection", function(socket) {
+  // Any new connection
   socket.on("establish_connection", function({ handle }) {
     self_id = socket.id;
     users[self_id] = socket;
@@ -40,6 +40,11 @@ io.on("connection", function(socket) {
       io.to(partner_id).emit("connection_success", { partner_id: -1 });
       io.to(self_id).emit("connection_success", { partner_id: -1 });
     }
+  });
+
+  // Typing indicator
+  socket.on("typing", function({ to, value }) {
+    io.to(to).emit("typing", { value: value });
   });
 
   socket.on("send_message", function({ to, message }) {

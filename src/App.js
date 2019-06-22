@@ -5,7 +5,7 @@ import Chat from "./containers/Chat";
 import Loader from "./components/Loader";
 import Logo from "./components/Logo";
 
-const socket = openSocket("http://localhost:7000"); // Defaults to current url
+const socket = openSocket(); // Defaults to current url
 
 export default class App extends React.Component {
   constructor(props) {
