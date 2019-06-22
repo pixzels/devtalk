@@ -15,7 +15,7 @@
   height: 2px;
   margin: 0 auto;
   border-radius: 2px;
-  background-color: var(--color-lightgrey);
+  background-color: var(--color-grey);
   position: relative;
   overflow: hidden;
   z-index: 1;

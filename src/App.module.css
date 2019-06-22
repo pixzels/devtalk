@@ -5,14 +5,13 @@
   overflow: hidden;
 }
 
-.container {
-  width: 50%;
+.input_box {
   margin: 0 auto;
   text-align: center;
 }
 
-.container input {
-  padding: 1rem;
+.input_box input {
+  padding: 2rem;
   border: none;
   outline: none;
   width: 100%;
@@ -22,11 +21,11 @@
   font-style: italic;
 }
 
-.container input::placeholder {
-  color: var(--color-lightgrey);
+.input_box input::placeholder {
+  color: var(--color-grey);
 }
 
-.container button {
+.input_box button {
   outline: none;
   border: none;
   cursor: pointer;
@@ -34,6 +33,7 @@
   font-family: inherit;
   text-decoration: underline;
   color: var(--color-blue);
+  background-color: transparent;
 }
 
 .status {
@@ -46,11 +46,6 @@
   .App {
     width: 70%;
   }
-
-  .container {
-    width: 70%;
-  }
-
 }
 
 @media only screen and (max-width: 500px) {
@@ -58,7 +53,4 @@
     width: 100%;
   }
 
-  .container {
-    width: 80%;
-  }
 }

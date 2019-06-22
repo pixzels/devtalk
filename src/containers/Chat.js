@@ -39,7 +39,7 @@ export default class Chat extends React.Component {
 
   render() {
     return (
-      <div className={styles.window}>
+      <React.Fragment>
         <Logo />
         <p className={styles.connection}>
           Connected to: {this.props.partner_id}
@@ -64,7 +64,7 @@ export default class Chat extends React.Component {
           />
           <button onClick={this.send_message}>Send</button>
         </div>
-      </div>
+      </React.Fragment>
     );
   }
 }

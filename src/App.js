@@ -65,7 +65,7 @@ export default class App extends React.Component {
           >
             <strong> Connect with awesome developers around the world! </strong>
           </p>
-          <div className={styles.container}>
+          <div className={styles.input_box}>
             <input
               placeholder="Handle"
               onChange={e =>

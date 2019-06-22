@@ -1,9 +1,10 @@
 @import url('https://fonts.googleapis.com/css?family=Karla:400,400i,700&display=swap');
 
 :root {
-  --color-lightgrey: rgb(199, 199, 204);
+  --color-grey: rgb(199, 199, 204);
   --color-blue: rgb(0, 122, 255);
-  --color-grey: rgb(142, 142, 147);
+  --color-lightgrey: rgb(229, 229, 234);
+  --color-black: rgb(28, 28, 30);
 }
 
 * {
@@ -25,4 +26,5 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-weight: 400;
+  color: var(--color-black)
 }
