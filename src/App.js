@@ -5,8 +5,7 @@ import Chat from "./containers/Chat";
 import Loader from "./components/Loader";
 import Logo from "./components/Logo";
 
-const port = process.env.PORT || 7000;
-const socket = openSocket(`https://lit-dawn-62972.herokuapp.com/${port}`);
+const socket = openSocket(); // Defaults to current url
 
 export default class App extends React.Component {
   constructor(props) {
